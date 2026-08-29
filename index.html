@@ -2,7 +2,6 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <!-- Tam Ekran Mobil Uygulama (PWA) Meta Etiketleri -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -43,6 +42,8 @@
         #welcome-screen { padding: 40px; max-width: 900px; margin: 0 auto; }
         #welcome-screen h1 { color: #0f172a; margin-bottom: 15px; font-size: 28px; }
         #welcome-screen p { color: #64748b; font-size: 16px; line-height: 1.6; margin-bottom: 30px; }
+        
+        /* Çerçeve Görünümü: Mobilde ve masaüstünde tam ekran kaplayacak */
         #pdf-viewer { width: 100%; height: 100%; border: none; display: none; background: #f8fafc; }
 
         /* Akıllı Sınav İstasyonu Kartı */
@@ -127,7 +128,7 @@
         <div class="content-area">
             <div id="welcome-screen">
                 <h1>Hoş Geldiniz</h1>
-                <p>Sol üstteki <b>☰ menü ikonuna</b> tıklayarak çalışmak istediğiniz mevzuat kategorisini seçin. Seçtiğiniz belgeler doğrudan Google Drive altyapısıyla anında bu ekranda açılacaktır.</p>
+                <p>Sol üstteki <b>☰ menü ikonuna</b> tıklayarak çalışmak istediğiniz mevzuat kategorisini seçin. Seçtiğiniz belgeler doğrudan uygulamanın içinde açılacaktır.</p>
                 
                 <!-- Akıllı Sınav İstasyonu -->
                 <div class="exam-card">
@@ -183,7 +184,7 @@
             hafizaPanel.classList.toggle('open');
         }
 
-        // Google Drive Klasörünü Görüntüleme
+        // Google Drive Klasörünü UYGULAMA İÇİNDE (İframe) Görüntüleme
         function showDriveFolder(folderId, btnElement) {
             // Aktif buton stilini ayarlama
             let buttons = document.getElementsByClassName('category-btn');
@@ -192,23 +193,23 @@
             }
             btnElement.classList.add('active-cat');
 
+            // Embed url
             const driveUrl = "https://drive.google.com/embeddedfolderview?id=" + folderId + "#list";
             
-            // Mobilde tıklanınca menüyü otomatik kapat
+            // Mobilde menüyü tıklandıktan sonra kapat (ekranı kaplamasın)
             if (window.innerWidth <= 768) {
-                window.open("https://drive.google.com/drive/folders/" + folderId, '_blank');
                 toggleSidebar();
-            } else {
-                // Masaüstünde iframede göster
-                welcomeScreen.style.display = 'none';
-                pdfViewer.style.display = 'block';
-                pdfViewer.src = driveUrl;
             }
+            
+            // YÖNLENDİRME İPTAL EDİLDİ - Ekran boyutu ne olursa olsun uygulamanın içindeki pencereyi (iframe) kullan
+            welcomeScreen.style.display = 'none';
+            pdfViewer.style.display = 'block';
+            pdfViewer.src = driveUrl;
         }
 
         // Prompt Kopyalama İşlemi
         function kopyalaPrompt(zorluk) {
-            let promptMetni = `Kültür ve Turizm Bakanlığı Stajyer Kontrolörlük / Yeterlilik Sınavı için bana [....] kanunu/yönetmeliği/tebliği ile ilgili ${zorluk} seviyede çoktan seçmeli yazılı sınav formatında bir deneme sınavı hazırlakla. Sorular özellikle ilgili mevzuatın tanım, tahsis, denetim, uyarma ve ceza maddelerinden gelsin. Sorular tuzaklı ve komite sınavı formatında olsun. Her sorunun altında detaylı hukuki gerekçesi ve ilgili madde açıklaması yer alsın.`;
+            let promptMetni = `Kültür ve Turizm Bakanlığı Stajyer Kontrolörlük / Yeterlilik Sınavı için bana [....] kanunu/yönetmeliği/tebliği ile ilgili ${zorluk} seviyede çoktan seçmeli yazılı sınav formatında bir deneme sınavı hazıkla. Sorular özellikle ilgili mevzuatın tanım, tahsis, denetim, uyarma ve ceza maddelerinden gelsin. Sorular tuzaklı ve komite sınavı formatında olsun. Her sorunun altında detaylı hukuki gerekçesi ve ilgili madde açıklaması yer alsın.`;
             
             navigator.clipboard.writeText(promptMetni).then(function() {
                 const notif = document.getElementById('copy-notification');
