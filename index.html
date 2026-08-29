@@ -15,7 +15,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #334155; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        /* Şık Üst Navigasyon Barı (Top Bar) */
+        /* Şık Üst Navigasyon Barı */
         .top-bar { height: 60px; background-color: #0f172a; color: #f8fafc; display: flex; align-items: center; padding: 0 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.15); z-index: 1050; position: relative; }
         .menu-btn { background: none; border: none; color: #38bdf8; font-size: 26px; cursor: pointer; margin-right: 15px; display: flex; align-items: center; justify-content: center; padding: 5px; transition: 0.2s; }
         .menu-btn:hover { color: #fff; }
@@ -25,209 +25,21 @@
         .main-container { display: flex; flex: 1; overflow: hidden; position: relative; }
 
         /* Modern Yan Menü (Sidebar) */
-        .sidebar { width: 300px; background-color: #1e293b; color: #cbd5e1; display: flex; flex-direction: column; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; overflow-y: auto; box-shadow: 2px 0 15px rgba(0,0,0,0.1); }
+        .sidebar { width: 320px; background-color: #1e293b; color: #cbd5e1; display: flex; flex-direction: column; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; overflow-y: auto; box-shadow: 2px 0 15px rgba(0,0,0,0.1); padding-bottom: 20px; }
         .sidebar-header { padding: 25px 20px 15px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; font-weight: 700; }
         
-        .category-btn { display: flex; align-items: center; padding: 16px 20px; background: transparent; border: none; color: #e2e8f0; font-size: 15px; font-weight: 500; cursor: pointer; width: 100%; text-align: left; transition: 0.2s; border-left: 4px solid transparent; }
-        .category-btn:hover { background-color: #334155; color: #fff; }
-        .category-btn.active-cat { background-color: #0f172a; border-left-color: #38bdf8; color: #38bdf8; font-weight: 600; }
-        .cat-icon { font-size: 20px; margin-right: 15px; width: 24px; text-align: center; }
+        /* Modern Akordiyon Butonları */
+        .accordion { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: transparent; border: none; color: #e2e8f0; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; text-align: left; transition: 0.2s; border-left: 4px solid transparent; border-bottom: 1px solid #334155; }
+        .accordion:hover { background-color: #334155; color: #fff; }
+        .accordion.active { background-color: #0f172a; border-left-color: #38bdf8; color: #38bdf8; }
+        .accordion:after { content: '▼'; font-size: 12px; color: #64748b; transition: 0.3s; }
+        .accordion.active:after { content: '▲'; color: #38bdf8; }
+        .cat-icon { font-size: 18px; margin-right: 10px; }
 
-        /* Mobil İçin Karartma Efekti (Overlay) */
-        .overlay { display: none; position: fixed; top: 60px; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); z-index: 990; opacity: 0; transition: opacity 0.3s; }
-        .overlay.show { display: block; opacity: 1; }
+        /* Açılır Panel ve İçerik Linkleri */
+        .panel { padding: 0; background-color: #0f172a; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .menu-item { padding: 12px 15px 12px 45px; cursor: pointer; border-bottom: 1px solid #1e293b; font-size: 13.5px; line-height: 1.5; color: #94a3b8; transition: 0.2s; display: block; }
+        .menu-item:hover { background-color: #38bdf8; color: #0f172a; font-weight: 600; }
 
-        /* İçerik ve İframe Alanı */
-        .content-area { flex: 1; display: flex; flex-direction: column; background-color: #fff; position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-        #welcome-screen { padding: 40px; max-width: 900px; margin: 0 auto; }
-        #welcome-screen h1 { color: #0f172a; margin-bottom: 15px; font-size: 28px; }
-        #welcome-screen p { color: #64748b; font-size: 16px; line-height: 1.6; margin-bottom: 30px; }
-        
-        /* Çerçeve Görünümü: Mobilde ve masaüstünde tam ekran kaplayacak */
-        #pdf-viewer { width: 100%; height: 100%; border: none; display: none; background: #f8fafc; }
-
-        /* Akıllı Sınav İstasyonu Kartı */
-        .exam-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-        .exam-card h3 { display: flex; align-items: center; gap: 10px; font-size: 18px; color: #0f172a; margin-bottom: 10px; }
-        .exam-buttons { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
-        .exam-btn { padding: 12px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; transition: transform 0.2s, box-shadow 0.2s; color: white; display: flex; align-items: center; gap: 8px; }
-        .exam-btn:active { transform: scale(0.97); }
-        .btn-easy { background: linear-gradient(135deg, #10b981, #059669); }
-        .btn-mid { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .btn-hard { background: linear-gradient(135deg, #ef4444, #dc2626); }
-        #copy-notification { display: none; margin-top: 20px; background-color: #f0fdfa; color: #0f766e; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 500; border: 1px solid #ccfbf1; }
-
-        /* Hafıza Sarayı FAB (Floating Action Button) */
-        .fab-btn { position: fixed; bottom: 30px; right: 30px; background-color: #38bdf8; color: #0f172a; border: none; border-radius: 50px; padding: 15px 25px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 15px -3px rgba(56, 189, 248, 0.4); z-index: 1001; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .fab-btn:hover { background-color: #0ea5e9; transform: translateY(-3px); }
-        
-        /* Hafıza Sarayı Çekmece Paneli */
-        .memory-panel { position: fixed; top: 60px; right: -400px; width: 400px; max-width: 100%; height: calc(100vh - 60px); background-color: #fff; box-shadow: -5px 0 25px rgba(0,0,0,0.1); z-index: 1002; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
-        .memory-panel.open { right: 0; }
-        .memory-header { background-color: #f8fafc; padding: 20px; color: #0f172a; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; }
-        .memory-header h3 { margin: 0; font-size: 16px; font-weight: 600; }
-        .close-memory { background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; padding: 5px; line-height: 1; }
-        .memory-textarea { flex: 1; width: 100%; background-color: #fff; color: #334155; border: none; padding: 20px; font-size: 15px; line-height: 1.7; resize: none; outline: none; box-sizing: border-box; font-family: inherit; }
-        .memory-textarea::placeholder { color: #cbd5e1; }
-
-        /* Responsive Tasarım (Mobil & Tablet) */
-        @media (max-width: 768px) {
-            .sidebar { position: fixed; top: 60px; bottom: 0; left: 0; transform: translateX(-100%); width: 280px; }
-            .sidebar.open { transform: translateX(0); }
-            .fab-btn { bottom: 20px; right: 20px; padding: 14px 20px; font-size: 14px; }
-            #welcome-screen { padding: 25px 20px; }
-            .exam-buttons { flex-direction: column; }
-            .exam-btn { justify-content: center; width: 100%; }
-        }
-        
-        /* Masaüstü Menü Aç/Kapat Durumu */
-        @media (min-width: 769px) {
-            .sidebar.desktop-closed { margin-left: -300px; }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Üst Navigasyon Barı -->
-    <div class="top-bar">
-        <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menüyü Aç/Kapat">☰</button>
-        <div class="app-title">Kültür ve Turizm Mevzuatı</div>
-    </div>
-
-    <!-- Ana Çalışma Alanı -->
-    <div class="main-container">
-        
-        <!-- Mobil Menü İçin Karartma -->
-        <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-
-        <!-- Yan Menü (Google Drive Bağlantıları) -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">Mevzuat Kütüphanesi</div>
-            
-            <button class="category-btn" onclick="showDriveFolder('1Ku4LKcdzTi2OzZYa9_bB23fIpxreByo2', this)">
-                <span class="cat-icon">📘</span> Kanunlar
-            </button>
-            <button class="category-btn" onclick="showDriveFolder('1bgVk6E9SzfRoaIV6C5snDS2ta-M5-pqc', this)">
-                <span class="cat-icon">📗</span> Yönetmelikler
-            </button>
-            <button class="category-btn" onclick="showDriveFolder('1PibKklpHJdrAuGpOYUbVqESlml3gkYDa', this)">
-                <span class="cat-icon">📔</span> Tebliğler
-            </button>
-            <button class="category-btn" onclick="showDriveFolder('1uWCtBW6GVIg6cHJZhHFEfN8Iu8x6ZXY-', this)">
-                <span class="cat-icon">📁</span> Genelgeler
-            </button>
-            
-            <div class="sidebar-header" style="margin-top: 15px;">Özel Notlar</div>
-            
-            <button class="category-btn" onclick="showDriveFolder('1GVZgR5STCpJLf-kXzIBDaA1rYFa3eslg', this)">
-                <span class="cat-icon">📝</span> Çalışma Notlarım
-            </button>
-        </div>
-
-        <!-- İçerik Görüntüleyici -->
-        <div class="content-area">
-            <div id="welcome-screen">
-                <h1>Hoş Geldiniz</h1>
-                <p>Sol üstteki <b>☰ menü ikonuna</b> tıklayarak çalışmak istediğiniz mevzuat kategorisini seçin. Seçtiğiniz belgeler doğrudan uygulamanın içinde açılacaktır.</p>
-                
-                <!-- Akıllı Sınav İstasyonu -->
-                <div class="exam-card">
-                    <h3>🎯 Sınav İstasyonu (Prompt Jeneratörü)</h3>
-                    <p style="margin-bottom: 0; font-size: 14px;">Zorluk derecesini seçin, yapay zekaya vereceğiniz profesyonel yazılı sınav komutu anında panoya kopyalansın. Boşluğu doldurup kendinizi test edin.</p>
-                    
-                    <div class="exam-buttons">
-                        <button class="exam-btn btn-easy" onclick="kopyalaPrompt('Kolay')">🟢 Kolay Seviye Üret</button>
-                        <button class="exam-btn btn-mid" onclick="kopyalaPrompt('Orta')">🟡 Orta Seviye Üret</button>
-                        <button class="exam-btn btn-hard" onclick="kopyalaPrompt('Zor')">🔴 Zor (Komite Tarzı) Üret</button>
-                    </div>
-                    <div id="copy-notification">✨ Komut panoya kopyalandı! Kendi sohbet ekranınıza yapıştırıp [....] alanını doldurun.</div>
-                </div>
-            </div>
-            
-            <iframe id="pdf-viewer" src="" title="Belge Görüntüleyici"></iframe>
-        </div>
-    </div>
-
-    <!-- Hafıza Sarayı Butonu ve Paneli -->
-    <button class="fab-btn" onclick="toggleHafiza()">🧠 Hafıza Sarayı</button>
-    <div class="memory-panel" id="hafizaPanel">
-        <div class="memory-header">
-            <h3>🧠 Hafıza Sarayı Notları</h3>
-            <button class="close-memory" onclick="toggleHafiza()">×</button>
-        </div>
-        <textarea class="memory-textarea" id="hafizaText" placeholder="Önemli tanımlar, süreler, mekansal şifreler ve idari para cezalarını buraya not alın..."></textarea>
-    </div>
-
-    <script>
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const hafizaPanel = document.getElementById('hafizaPanel');
-        const pdfViewer = document.getElementById('pdf-viewer');
-        const welcomeScreen = document.getElementById('welcome-screen');
-
-        // Yan Menü Açma/Kapama İşlemi
-        function toggleSidebar() {
-            if (window.innerWidth <= 768) {
-                sidebar.classList.toggle('open');
-                if (sidebar.classList.contains('open')) {
-                    overlay.classList.add('show');
-                } else {
-                    overlay.classList.remove('show');
-                }
-            } else {
-                sidebar.classList.toggle('desktop-closed');
-            }
-        }
-
-        // Hafıza Sarayı Açma/Kapama
-        function toggleHafiza() {
-            hafizaPanel.classList.toggle('open');
-        }
-
-        // Google Drive Klasörünü UYGULAMA İÇİNDE (İframe) Görüntüleme
-        function showDriveFolder(folderId, btnElement) {
-            // Aktif buton stilini ayarlama
-            let buttons = document.getElementsByClassName('category-btn');
-            for(let i=0; i<buttons.length; i++){
-                buttons[i].classList.remove('active-cat');
-            }
-            btnElement.classList.add('active-cat');
-
-            // Embed url
-            const driveUrl = "https://drive.google.com/embeddedfolderview?id=" + folderId + "#list";
-            
-            // Mobilde menüyü tıklandıktan sonra kapat (ekranı kaplamasın)
-            if (window.innerWidth <= 768) {
-                toggleSidebar();
-            }
-            
-            // YÖNLENDİRME İPTAL EDİLDİ - Ekran boyutu ne olursa olsun uygulamanın içindeki pencereyi (iframe) kullan
-            welcomeScreen.style.display = 'none';
-            pdfViewer.style.display = 'block';
-            pdfViewer.src = driveUrl;
-        }
-
-        // Prompt Kopyalama İşlemi
-        function kopyalaPrompt(zorluk) {
-            let promptMetni = `Kültür ve Turizm Bakanlığı Stajyer Kontrolörlük / Yeterlilik Sınavı için bana [....] kanunu/yönetmeliği/tebliği ile ilgili ${zorluk} seviyede çoktan seçmeli yazılı sınav formatında bir deneme sınavı hazıkla. Sorular özellikle ilgili mevzuatın tanım, tahsis, denetim, uyarma ve ceza maddelerinden gelsin. Sorular tuzaklı ve komite sınavı formatında olsun. Her sorunun altında detaylı hukuki gerekçesi ve ilgili madde açıklaması yer alsın.`;
-            
-            navigator.clipboard.writeText(promptMetni).then(function() {
-                const notif = document.getElementById('copy-notification');
-                notif.style.display = 'block';
-                setTimeout(() => {
-                    notif.style.display = 'none';
-                }, 4000);
-            });
-        }
-
-        // Hafıza Sarayı Local Storage Entegrasyonu
-        const hafizaText = document.getElementById('hafizaText');
-        if(localStorage.getItem('hafizaNotlari')) {
-            hafizaText.value = localStorage.getItem('hafizaNotlari');
-        }
-        hafizaText.addEventListener('input', function() {
-            localStorage.setItem('hafizaNotlari', this.value);
-        });
-    </script>
-</body>
-</html>
+        /* Mobil İçin Karartma Efekti */
+        .overlay { display: none; position: fixed; top: 60px; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); z-
